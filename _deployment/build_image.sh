@@ -8,6 +8,7 @@ CONTAINER_NAME=featurz
 
 export PATH=$PATH:/usr/local/go/bin
 
+cd "$MY_PATH"
 go env
 go mod download
 # go test -v "$MY_PATH"/...

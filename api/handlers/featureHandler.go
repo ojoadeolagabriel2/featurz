@@ -56,9 +56,15 @@ func GetFeatureByTag(writer http.ResponseWriter, request *http.Request, next htt
 		}
 	}
 
-	payload, _ := json.Marshal(selectedFeatures)
-	writer.Header().Set("Content-Type", "application/json")
-	_, _ = writer.Write(payload)
+	if len(selectedFeatures) != 0 {
+		payload, _ := json.Marshal(selectedFeatures)
+		writer.Header().Set("Content-Type", "application/json")
+		_, _ = writer.Write(payload)
+		return
+	}
+
+	emptyResponse, _ := json.Marshal(make(map[string]string))
+	_, _ = writer.Write(emptyResponse)
 }
 
 func UpdateFeature(writer http.ResponseWriter, request *http.Request, next http.HandlerFunc) {
