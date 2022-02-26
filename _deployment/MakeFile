@@ -1,0 +1,2 @@
+ready_check:
+	echo "make file seems good"
