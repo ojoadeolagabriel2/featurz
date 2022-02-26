@@ -40,6 +40,32 @@ func GetFeatureById(writer http.ResponseWriter, request *http.Request, next http
 	}
 }
 
+func GetFeatureByTag(writer http.ResponseWriter, request *http.Request, next http.HandlerFunc) {
+	query := request.URL.Query()
+	tag := query.Get("tag")
+	log.Println("tag: " + tag)
+
+	var selectedFeatures []data.Feature
+	for _, feature := range data.SampleData {
+		for _, tagItem := range feature.Tags {
+			if tag == tagItem {
+				selectedFeatures = append(selectedFeatures, feature)
+				log.Printf("found feature %s by tag %s", feature.Name, tag)
+				break
+			}
+		}
+	}
+
+	payload, _ := json.Marshal(selectedFeatures)
+	writer.Header().Set("Content-Type", "application/json")
+	_, _ = writer.Write(payload)
+}
+
+func UpdateFeature(writer http.ResponseWriter, request *http.Request, next http.HandlerFunc) {
+	emptyResponse, _ := json.Marshal(make(map[string]string))
+	_, _ = writer.Write(emptyResponse)
+}
+
 func GetFeatureLikeName(writer http.ResponseWriter, request *http.Request, next http.HandlerFunc) {
 	vars := mux.Vars(request)
 	key := vars["name"]

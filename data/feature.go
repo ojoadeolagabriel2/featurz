@@ -8,32 +8,49 @@ const (
 	FeatureRollout    = 2
 )
 
+const (
+	Percent = "Percent"
+	Count   = "Count"
+)
+
 type Feature struct {
-	Id          string `json:"id"`
-	Name        string `json:"name"`
-	Description string `json:"description"`
-	Slug        string `json:"slug"`
-	Group       string `json:"group"`
-	State       int    `json:"state"`
+	Id           string   `json:"id"`
+	Name         string   `json:"name"`
+	Description  string   `json:"description"`
+	Slug         string   `json:"slug"`
+	RolloutType  string   `json:"rollout_type"`
+	RolloutValue float64  `json:"rollout_value"`
+	Users        []string `json:"users"`
+	Groups       []string `json:"groups"`
+	State        int      `json:"state"`
+	Tags         []string `json:"tags"`
 }
 
 type TestFeatures []Feature
 
 var SampleData TestFeatures = []Feature{
 	{
-		Id:          uuid.New().String(),
-		Name:        "view_card_details",
-		Description: "view card details",
-		Slug:        "view_card_details",
-		Group:       "payments",
-		State: FeatureRollout,
+		Id:           uuid.New().String(),
+		Name:         "view_card_details",
+		Description:  "view card details",
+		Slug:         "view_card_details",
+		RolloutType:  Percent,
+		RolloutValue: 45.5,
+		Groups:       []string{"payments", "transfers"},
+		State:        FeatureRollout,
+		Users:        []string{"10001", "10002"},
+		Tags:         []string{"cards", "payments"},
 	},
 	{
-		Id:          uuid.New().String(),
-		Name:        "cache_issuer",
-		Description: "mapped to issuer functionality",
-		Slug:        "cache_issuer",
-		Group:       "infrastructure",
-		State: FeatureRollingOut,
+		Id:           uuid.New().String(),
+		Name:         "cache_issuer",
+		Description:  "mapped to issuer functionality",
+		Slug:         "cache_issuer",
+		RolloutType:  Count,
+		RolloutValue: 90,
+		Groups:       []string{"cache", "performance"},
+		State:        FeatureRollingOut,
+		Users:        []string{"10003"},
+		Tags:         []string{"infrastructure", "platform"},
 	},
 }
