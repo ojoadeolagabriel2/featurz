@@ -7,6 +7,7 @@ import (
 	"fmt"
 	"github.com/gorilla/mux"
 	"github.com/ojoadeolagabriel2/autogate-go-core/util"
+	"github.com/urfave/negroni"
 	"log"
 	"net/http"
 )
@@ -32,8 +33,26 @@ func addRoutes(router *mux.Router) {
 	}).Methods("GET")
 
 	// user handler mapping
-	router.HandleFunc(EnvApiPrefixKey + "/features", handlers.GetAllFeatures).Methods("GET")
-	router.HandleFunc(EnvApiPrefixKey + "/features/{id}", handlers.GetFeatureById).Methods("GET")
+	router.
+		Methods(http.MethodGet).
+		Path(EnvApiPrefixKey+"/features").
+		Queries("name", "{name:[a-z,]+}").
+		Handler(negroni.New(negroni.HandlerFunc(handlers.GetFeatureLikeName)))
+
+	router.
+		Methods(http.MethodGet).
+		Path(EnvApiPrefixKey+"/features/{id}").
+		Handler(negroni.New(negroni.HandlerFunc(handlers.GetFeatureById)))
+
+	router.
+		Methods(http.MethodGet).
+		Path(EnvApiPrefixKey+"/features").
+		Handler(negroni.New(negroni.HandlerFunc(handlers.GetAllFeatures)))
+
+	router.
+		Methods(http.MethodPost).
+		Path(EnvApiPrefixKey+"/features").
+		Handler(negroni.New(negroni.HandlerFunc(handlers.CreateFeature)))
 
 	err := http.ListenAndServe(fmt.Sprintf(":%d", util.GetIntConfig(EnvAppPort, 12345)), router)
 	if err != nil {
