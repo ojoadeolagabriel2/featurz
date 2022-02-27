@@ -32,7 +32,7 @@ func AddRoutes(router *mux.Router) {
 	router.
 		Methods(http.MethodGet).
 		Path(EnvApiPrefixKey+"/features").
-		Queries("name", "{name:[a-z,]+}").
+		Queries("name", "{name:[a-zA-Z]+}").
 		Handler(negroni.New(negroni.HandlerFunc(handlers.GetFeatureLikeName)))
 	log.Println("handler [GetFeatureLikeName] registered")
 
