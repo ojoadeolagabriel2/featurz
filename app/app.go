@@ -4,6 +4,7 @@ import (
 	"database/sql"
 	"fmt"
 	"github.com/gorilla/mux"
+	_ "github.com/lib/pq"
 	"log"
 )
 
@@ -25,5 +26,7 @@ func (app *App) InitializeDb(username string, password string) {
 	app.DB, err = sql.Open("postgres", connectionString)
 	if err != nil {
 		log.Fatal(err)
+	} else {
+		log.Println("connected to postgres instance")
 	}
 }
