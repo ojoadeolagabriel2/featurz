@@ -2,15 +2,16 @@ package app
 
 import (
 	"database/sql"
+	"featurz/data"
 	"fmt"
 	"github.com/gorilla/mux"
 	_ "github.com/lib/pq"
-	"log"
 )
 
 type App struct {
-	Router *mux.Router
-	DB     *sql.DB
+	Router  *mux.Router
+	DB      *sql.DB
+	Storage *data.FeatureStorage
 }
 
 type DbConfigOpt struct {
@@ -36,12 +37,8 @@ func (app *App) InitializeDb(opt DbConfigOpt) {
 	if err != nil {
 		panic(err)
 	}
-	defer func(db *sql.DB) {
-		err := db.Close()
-		if err != nil {
-			log.Fatalln(err.Error())
-		}
-	}(db)
+
+	defer db.Close()
 
 	// ping
 	err = db.Ping()

@@ -97,6 +97,6 @@ func GetFeatureLikeName(writer http.ResponseWriter, request *http.Request, next 
 
 func CreateFeature(writer http.ResponseWriter, r *http.Request, next http.HandlerFunc) {
 	writer.Header().Set("Content-Type", "application/json")
-	payload, _ := json.Marshal(data.TestFeatures{})
+	payload, _ := json.Marshal(data.Features{})
 	_, _ = writer.Write(payload)
 }

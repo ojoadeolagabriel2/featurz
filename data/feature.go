@@ -26,9 +26,9 @@ type Feature struct {
 	Tags         []string `json:"tags"`
 }
 
-type TestFeatures []Feature
+type Features []Feature
 
-var SampleData TestFeatures = []Feature{
+var SampleData Features = []Feature{
 	{
 		Id:           uuid.New().String(),
 		Name:         "view_card_details",
