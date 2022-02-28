@@ -13,20 +13,41 @@ type App struct {
 	DB     *sql.DB
 }
 
+type DbConfigOpt struct {
+	Username     string
+	Password     string
+	Host         string
+	Port         int
+	DatabaseName string
+}
+
 func (app *App) InitializeRouter() {
 	router := mux.NewRouter().StrictSlash(true)
 	app.Router = router
 }
 
-func (app *App) InitializeDb(username string, password string) {
-	connectionString :=
-		fmt.Sprintf("user=%s password=%s dbname=%s sslmode=disable", username, password, "postgres")
+func (app *App) InitializeDb(opt DbConfigOpt) {
+	psqlInfo := fmt.Sprintf("host=%s port=%d user=%s "+
+		"password=%s dbname=%s sslmode=disable",
+		opt.Host, opt.Port, opt.Username, opt.Password, opt.DatabaseName)
 
-	var err error
-	app.DB, err = sql.Open("postgres", connectionString)
+	// open connection
+	db, err := sql.Open("postgres", psqlInfo)
 	if err != nil {
-		log.Fatal(err)
-	} else {
-		log.Println("connected to postgres instance")
+		panic(err)
 	}
+	defer func(db *sql.DB) {
+		err := db.Close()
+		if err != nil {
+			log.Fatalln(err.Error())
+		}
+	}(db)
+
+	// ping
+	err = db.Ping()
+	if err != nil {
+		panic(err)
+	}
+
+	fmt.Printf("Connected to database @ localhost:%d/%s\n", opt.Port, opt.DatabaseName)
 }
