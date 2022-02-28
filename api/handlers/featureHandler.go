@@ -3,6 +3,7 @@ package handlers
 import (
 	"encoding/json"
 	"featurz/data"
+	"featurz/values"
 	"fmt"
 	"github.com/gorilla/mux"
 	"log"
@@ -56,7 +57,7 @@ func GetFeatureByTag(writer http.ResponseWriter, request *http.Request, next htt
 		}
 	}
 
-	if len(selectedFeatures) != 0 {
+	if len(selectedFeatures) != values.ZERO {
 		payload, _ := json.Marshal(selectedFeatures)
 		writer.Header().Set("Content-Type", "application/json")
 		_, _ = writer.Write(payload)
@@ -67,7 +68,7 @@ func GetFeatureByTag(writer http.ResponseWriter, request *http.Request, next htt
 	_, _ = writer.Write(emptyResponse)
 }
 
-func UpdateFeature(writer http.ResponseWriter, request *http.Request, next http.HandlerFunc) {
+func UpdateFeature(writer http.ResponseWriter, _ *http.Request, _ http.HandlerFunc) {
 	emptyResponse, _ := json.Marshal(make(map[string]string))
 	_, _ = writer.Write(emptyResponse)
 }

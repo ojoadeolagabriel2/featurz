@@ -1,7 +1,6 @@
 package api
 
 import (
-	"encoding/json"
 	"featurz/api/handlers"
 	"fmt"
 	"github.com/gorilla/mux"
@@ -23,10 +22,11 @@ func AddRoutes(router *mux.Router) {
 	fmt.Println("\nFeature Service Rest API - v1.0\n===============================")
 
 	// defaults
-	router.HandleFunc("/health", func(w http.ResponseWriter, r *http.Request) {
-		_ = json.NewEncoder(w).Encode(map[string]bool{"ok": true})
-		log.Println("/health endpoint called")
-	}).Methods("GET")
+	router.
+		Methods(http.MethodGet).
+		Path("/health").
+		Handler(negroni.New(negroni.HandlerFunc(handlers.GetHealthStatus)))
+	log.Println("handler [GetHealthStatus] registered")
 
 	// user handler mapping
 	router.
@@ -45,7 +45,7 @@ func AddRoutes(router *mux.Router) {
 
 	router.
 		Methods(http.MethodPut).
-		Path(EnvApiPrefixKey+"/features").
+		Path(EnvApiPrefixKey + "/features").
 		Handler(negroni.New(negroni.HandlerFunc(handlers.UpdateFeature)))
 	log.Println("handler [UpdateFeature] registered")
 
