@@ -8,11 +8,7 @@ import (
 )
 
 func main() {
-	preInitiate()
 	initiate()
-}
-
-func preInitiate() {
 }
 
 func initiate() {
