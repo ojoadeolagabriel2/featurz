@@ -37,7 +37,7 @@ var SampleData Features = []Feature{
 		RolloutType:  Percent,
 		RolloutValue: 45.5,
 		Groups:       []string{"payments", "transfers"},
-		State:        FeatureRollout,
+		State:        FeatureDisabled,
 		Users:        []string{"10001", "10002"},
 		Tags:         []string{"cards", "payments"},
 	},

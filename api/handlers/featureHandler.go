@@ -84,7 +84,7 @@ func GetFeatureLikeName(writer http.ResponseWriter, request *http.Request, next 
 		}
 	}
 
-	if len(selectedFeatures) != 0 {
+	if len(selectedFeatures) != values.ZERO {
 		writer.Header().Set("Content-Type", "application/json")
 		payload, _ := json.Marshal(selectedFeatures)
 		_, _ = writer.Write(payload)
