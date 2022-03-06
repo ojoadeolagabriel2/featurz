@@ -37,7 +37,6 @@ func (app *App) InitializeDb(opt DbConfigOpt) {
 	if err != nil {
 		panic(err)
 	}
-
 	defer db.Close()
 
 	// ping

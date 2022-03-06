@@ -1,12 +1,29 @@
 package data
 
-import "github.com/google/uuid"
+import (
+	"strings"
+
+	"github.com/google/uuid"
+)
 
 const (
 	FeatureDisabled   = 0
 	FeatureRollingOut = 1
 	FeatureRollout    = 2
 )
+
+const (
+	Users = "denis"
+)
+
+type X struct {
+	Id string `json:"dolobuchi"`
+}
+
+func (x *X) Process() string {
+	data := []string{}
+	return strings.Join(data, x.Id)
+}
 
 const (
 	Percent = "Percent"
